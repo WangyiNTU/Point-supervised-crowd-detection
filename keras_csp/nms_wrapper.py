@@ -5,7 +5,7 @@
 # Written by Ross Girshick
 # --------------------------------------------------------
 
-from nms.gpu_nms import gpu_nms
+# from nms.gpu_nms import gpu_nms
 from nms.cpu_nms import cpu_nms
 import numpy as np
 
