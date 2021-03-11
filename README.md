@@ -1,5 +1,3 @@
-# A Self-Training Approach for Point-Supervised Object Detection and Counting in Crowds
-The code will be publicly available.
 # Crowd-SDNet: Point-supervised crowd self-detection network
 Keras implementation of of [paper](https://ieeexplore.ieee.org/abstract/document/9347744): **A Self-Training Approach for Point-Supervised Object Detection and Counting in Crowds**. The code is developed based on [CSP](https://github.com/liuwei16/CSP).
 This work is accepted by IEEE TIP 2021.
