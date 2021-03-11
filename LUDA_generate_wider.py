@@ -37,7 +37,7 @@ while index<num_lines:
     filename = lines[index].strip()
     img_count += 1
     if img_count%1000 == 0:
-        print 'Processed' + img_count
+        print 'Processed' + str(img_count)
     num_obj = int(lines[index+1])
     filepath = os.path.join(img_path, filename)
     img = cv2.imread(filepath)
