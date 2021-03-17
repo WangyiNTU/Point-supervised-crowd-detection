@@ -126,7 +126,7 @@ To reproduce the results in our paper, we have provided the models. You can down
 
 1. For WiderFace
  
-   Download it from [output/valmodels/wider/h/off/](https://entuedu-my.sharepoint.com/:u:/g/personal/wang1241_e_ntu_edu_sg/Ead4QUxwq1dPgOsQlJK3avwBE2QocMtFEk_UWyi-cJQfEA?e=pwzRRg) and put it in the `./output/valmodels/wider/h/off/`
+   Download it from [output/valmodels/wider/h/off/](https://entuedu-my.sharepoint.com/:f:/g/personal/wang1241_e_ntu_edu_sg/EtUAOGz_tbJAk4HvucUIqUIBvfvscIbJ94gtzB_f8ILKtg?e=NdpvUf) and put it in the `./output/valmodels/wider/h/off/`
 
 
 # Citation
