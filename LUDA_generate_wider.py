@@ -7,7 +7,7 @@ import scipy.spatial
 
 ############ locally-uniform distribution assumption (LUDA)##########
 # change to your WIDER Face dataset folder ##########################
-root_dir = '/media/wangyi/Data/BK_STLab_19-20/data/WIDER'
+root_dir = './data/WIDER'
 split = 'val' # train or val
 ########################################################
 
