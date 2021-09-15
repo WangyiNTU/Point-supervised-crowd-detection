@@ -98,24 +98,26 @@ def test(val_data, detections_path, out_path, thr):
 if __name__ == '__main__':
     C = config.Config()
 
-    part = 'wider'  # part_A, part_B, wider
-    split = 'val'  # val or test
+    part = 'part_A'  # part_A, part_B, wider
 
     C.offset = True
     if part == 'part_A':
         res_dataset = 'ShanghaiTechA'
         C.offset = False
         threshold = 0.41 # according to the best val's thr
-        epoch = 'txt' # according to the best val's epoch
+        epoch = '32' # according to the best val's epoch
+        split = 'test'
     elif part == 'part_B':
         res_dataset = 'ShanghaiTechB'
         C.offset = False
         threshold = 0.42 # according to the best val's thr
-        epoch = 'txt' # according to the best val's epoc
+        epoch = '32' # according to the best val's epocH
+        split = 'test'
     elif part == 'wider':
         res_dataset = 'wider'
         threshold = 0.4
         epoch = '197'
+        split = 'val'
 
     C.scale = 'h'
     C.num_scale = 1
