@@ -4,7 +4,8 @@ This work is accepted by IEEE TIP 2021.
 
 ## Progress
 - [x] Training and Testing Code of WiderFace
-- [ ] Training and Testing Code of ShanghaiTech
+- [x] Training and Testing Code of ShanghaiTech
+- [ ] Pytorch implementation (Expect coming in Nov.)
 
 
 ## Introduction
@@ -42,33 +43,54 @@ pip install -r requirements.txt
 ## Preparation
 1. Dataset downloading.
 
-   For the WiderFace dataset, we download the training and validation images and annotations at [WiderFace](http://shuoyang1213.me/WIDERFACE/) and put it in `./data/WIDER` with the folder tree:
+   1.1 For the WiderFace dataset, we download the training and validation images and annotations at [WiderFace](http://shuoyang1213.me/WIDERFACE/) and put it in `./data/WIDER` with the folder tree:
 
-```
--- WIDER
-    |-- WIDER_train
-        |-- images
-            |-- 0--Parade
-            |-- 1--Handshaking
+   1.2 For the ShanghaiTech dataset, we download the training and validation images and annotations at [ShanghaiTech](https://entuedu-my.sharepoint.com/:u:/g/personal/wang1241_e_ntu_edu_sg/EQcAhGPavgdEiEnSZY29FjwB9UEt37K_9wJKmOpgAU7-OA?e=wJtlgr) and put it in `./data/part_A` or `./data/part_B` with the folder tree:
+
+   ```
+   -- WIDER
+       |-- WIDER_train
+           |-- images
+               |-- 0--Parade
+               |-- 1--Handshaking
+               |-- ...
+       |--WIDER_val
+               |-- images
+               |-- 0--Parade
+               |-- 1--Handshaking
+               |-- ...
+       |--wider_face_split
+            |-- wider_face_train_bbx_gt.txt
+            |-- wider_face_val_bbx_gt.txt
             |-- ...
-    |--WIDER_val
+   --part_A or part_B
+       |-- train_data
             |-- images
-            |-- 0--Parade
-            |-- 1--Handshaking
-            |-- ...
-    |--wider_face_split
-         |-- wider_face_train_bbx_gt.txt
-         |-- wider_face_val_bbx_gt.txt
-         |-- ...
- ```
+               |-- IMG_1.jpg
+               |-- ...
+            |-- ground-truth
+               |-- GT_IMG_1.mat
+               |-- ...
+       |-- val_data
+            |-- images
+            |-- ground-truth
+       |-- test_data
+            |-- images
+            |-- ground-truth
+    ```
 
 2. Dataset preparation.
 
-   Prepare an annotation-cache file by the locally-uniform distribution assumption (LUDA) method, which generates the pseudo object sizes. (Change WIDER Face dataset folder and split (train or val) in the code)
+   Prepare an annotation-cache file by the locally-uniform distribution assumption (LUDA) method, which generates the pseudo object sizes. (Change WiderFace/ShanghaiTech dataset folder and split (train or val) in the following code.)
+
    By default, we assume the cache files is stored in `./data/cache/`.
-```
-python LUDA_generate_wider.py
-```
+   ```
+   python LUDA_generate_wider.py
+   ```
+   or (Change Line 13-15 to generate train, train_val, and val cache, respectively), 
+   ```
+   python LUDA_generate_SH.py
+   ```
 
 3. Initialized models preparation.
 
@@ -81,6 +103,12 @@ python LUDA_generate_wider.py
 
    Optionally, you should set the training parameters in [./keras_csp/config.py](./keras_csp/config.py) or replace some parameters in train_wider.py.
 
+2. Train on ShanghaiTech.
+
+   Follow the [./train_ShanghaiTechA.py](./train_ShanghaiTechA.py) or [./train_ShanghaiTechB.py](./train_ShanghaiTechB.py) to start training. The weight files of all epochs will be saved in `./output/valmodels/`. 
+
+Since the codes are slightly different from the paper version with fine-tuned parameters and random seeds, the results may be better or worse. Re-implementation of paper's results can refer to the trained model [Models](#models).
+
 ## Test
 1. Test on WiderFace.
 
@@ -91,8 +119,13 @@ python LUDA_generate_wider.py
  Since using multi-scale testing and there is no optimization of soft nms (cpu python version), it will take several hours to run the val set.
  Some scales like [0.75, 1.25, 1.75] can be removed to increase inference speed with a little performance decrease.
 
+
+2. Test on ShanghaiTech.
+   Follow the [./test_ShanghaiTechA.py](./test_ShanghaiTechA.py) or [./test_ShanghaiTechB.py](./test_ShanghaiTechB.py) to get the detection results. The results will be saved in `./output/valresults/`.
+   Without [Training](#training), the test code can be performed with pretrained model from [Models](#models).
+
 ## Evaluation
-1. Calculate AP scores. 
+1. Calculate AP scores for WiderFace dataset. 
    
    Download [Evaluation tool](http://shuoyang1213.me/WIDERFACE/support/eval_script/eval_tools.zip) for the official website of WiderFace.
 
@@ -101,19 +134,25 @@ python LUDA_generate_wider.py
 
 2. Counting by detection.
    
-   Get the MAE, MSE, NAE on the WiderFace val set by running
+   Get the MAE, MSE, NAE on the WiderFace val set / ShanghaiTech test set by running
    ```
    python tools/counting_by_detection.py
    ```
-   Specify 'part' to the dataset name (wider) and 'split' to val.
+   Specify 'part' to the dataset name (wider, part_A, part_B) in Line 101.
 
 
-3. Plot predicted detections of WiderFace.
-   
+3. Plot predicted detections.
+
    Plot detections on the image files by running
     ```
    python tools/plot_wider_detections.py
    ```
+   Change thr and epoch of Line 13-14 for your trained model. or,
+   ```
+   python tools/plot_ShanghaiTech_detections.py
+   ```
+   Change part, thr and epoch of Line 12-23 for your trained model.
+   
    
    Qualitative results on (a) WiderFace, (b) SHA, (c) SHB, (d) PUCPR+, and (e) CARPK. The top row shows the ground-truth boxes or points, and counts. The bottom row shows the bounding boxes and counts predicted by our approach.
    ![Qualitative results](./docs/Fig3-1.png)
@@ -126,11 +165,17 @@ To reproduce the results in our paper, we have provided the models. You can down
 
 1. For WiderFace
  
-   Download it from [output/valmodels/wider/h/off/](https://entuedu-my.sharepoint.com/:f:/g/personal/wang1241_e_ntu_edu_sg/EtUAOGz_tbJAk4HvucUIqUIBvfvscIbJ94gtzB_f8ILKtg?e=NdpvUf) and put it in the `./output/valmodels/wider/h/off/`
+   Download [wider.zip](https://entuedu-my.sharepoint.com/:u:/g/personal/wang1241_e_ntu_edu_sg/EWTfU2cop9pMv5wlBGWtzPMBdZ_jtV616G5z-KAKUrqnQw?e=UgvVUq), put it in the `./output/valmodels`, and unzip to `./output/valmodels/wider/h/off/`
+
+2. For ShanghaiTech
+
+   Download part_A model [ShanghaiTechA.zip](https://entuedu-my.sharepoint.com/:u:/g/personal/wang1241_e_ntu_edu_sg/EftBSABp1qxNooFHllcIciQB1ZtY-rlwMihJO6YOQpzGig?e=wScHz7), put it in the `./output/valmodels`, and unzip to `./output/valmodels/ShanghaiTechA/h/nooff/`
+
+   Download part_B model [ShanghaiTechB.zip](https://entuedu-my.sharepoint.com/:u:/g/personal/wang1241_e_ntu_edu_sg/EdjHag4mRCxBs3u1K7xJ7OQB5RR6VzRRUixn8v2Qvzy6mw?e=5QztWq), put it in the `./output/valmodels`, and unzip to `./output/valmodels/ShanghaiTechB/h/nooff/`
 
 
 # Citation
-If you find this project is useful for your research, please cite:
+If you find this research project is useful for your research, please cite:
 ```
 @article{wang2021self_training,
   title={A Self-Training Approach for Point-Supervised Object Detection and Counting in Crowds},
@@ -142,3 +187,6 @@ If you find this project is useful for your research, please cite:
   publisher={IEEE}
 }
 ```
+
+
+
