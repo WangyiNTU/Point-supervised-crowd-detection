@@ -5,7 +5,6 @@ This work is accepted by IEEE TIP 2021.
 ## Progress
 - [x] Training and Testing Code of WiderFace
 - [x] Training and Testing Code of ShanghaiTech
-- [ ] Pytorch implementation (Expect coming in Nov.)
 
 
 ## Introduction
@@ -175,7 +174,7 @@ To reproduce the results in our paper, we have provided the models. You can down
 
 
 # Citation
-If you find this research project is useful for your research, please cite:
+If you find this research project is useful for your research, please star :star: this repository and consider citing :pencil::
 ```
 @article{wang2021self_training,
   title={A Self-Training Approach for Point-Supervised Object Detection and Counting in Crowds},
