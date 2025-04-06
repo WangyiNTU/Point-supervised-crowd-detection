@@ -172,6 +172,9 @@ To reproduce the results in our paper, we have provided the models. You can down
 
    Download part_B model [ShanghaiTechB.zip](https://entuedu-my.sharepoint.com/:u:/g/personal/wang1241_e_ntu_edu_sg/EdjHag4mRCxBs3u1K7xJ7OQB5RR6VzRRUixn8v2Qvzy6mw?e=5QztWq), put it in the `./output/valmodels`, and unzip to `./output/valmodels/ShanghaiTechB/h/nooff/`
 
+```
+This project was supported in part by Hong Kong Research Grants Council under Grant CityU 11219019 and CityU 11202320.
+```
 
 # Citation
 If you find this research project is useful for your research, please star :star: this repository and consider citing :pencil::
